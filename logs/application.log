@@ -1,0 +1,111 @@
+2024-10-26 19:57:05,089 - ERROR - Error al cargar el modelo desde /home/rnn/dev/modelo_trained.h5: No file or directory found at /home/rnn/dev/modelo_trained.h5
+2024-10-26 19:57:35,223 - ERROR - Error al cargar el modelo desde /home/rnn/dev/modelo_trained.h5: No file or directory found at /home/rnn/dev/modelo_trained.h5
+2024-10-26 19:58:42,611 - ERROR - Error al cargar el modelo desde /home/rnn/dev/modelo_trained.h5: No file or directory found at /home/rnn/dev/modelo_trained.h5
+2024-10-26 20:00:10,395 - ERROR - Error al cargar el modelo desde /home/rnn/dev/modelo_trained.h5: No file or directory found at /home/rnn/dev/modelo_trained.h5
+2024-10-26 20:01:04,842 - ERROR - Error al cargar el modelo desde /home/rnn/dev/modelo_trained.h5: No file or directory found at /home/rnn/dev/modelo_trained.h5
+2024-10-26 20:03:45,885 - ERROR - Error al cargar el modelo desde /home/rnn/dev/modelo_trained.h5: No file or directory found at /home/rnn/dev/modelo_trained.h5
+2024-10-26 20:05:44,775 - ERROR - Error al cargar el modelo desde modelo_trained.h5: No file or directory found at modelo_trained.h5
+2024-10-26 20:08:20,645 - ERROR - Error al cargar el modelo desde modelo_trained.h5: No file or directory found at modelo_trained.h5
+2024-10-26 20:09:33,248 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:09:35,204 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:09:40,781 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:09:40,796 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:09:41,886 - INFO - Datos cargados.
+2024-10-26 20:09:41,978 - INFO - Datos cargados.
+2024-10-26 20:11:05,391 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:11:06,149 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:11:07,082 - INFO - Datos cargados.
+2024-10-26 20:12:09,140 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:12:09,996 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:12:11,416 - INFO - Datos cargados.
+2024-10-26 20:13:00,490 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:13:01,946 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:13:02,864 - INFO - Datos cargados.
+2024-10-26 20:13:02,916 - INFO - Creando ventanas.
+2024-10-26 20:15:10,056 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:15:11,298 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:15:12,218 - INFO - Datos cargados.
+2024-10-26 20:15:12,274 - INFO - Creando ventanas.
+2024-10-26 20:17:31,776 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:17:32,933 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:17:33,843 - INFO - Datos cargados.
+2024-10-26 20:17:33,897 - INFO - Creando ventanas.
+2024-10-26 20:17:33,907 - INFO - Ventanas creadas
+2024-10-26 20:19:38,234 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:19:39,470 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:19:40,341 - INFO - Datos cargados.
+2024-10-26 20:19:40,394 - INFO - Creando ventanas.
+2024-10-26 20:19:40,406 - INFO - Ventanas creadas
+2024-10-26 20:21:38,314 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:21:39,515 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:21:40,497 - INFO - Datos cargados.
+2024-10-26 20:21:40,545 - INFO - Creando ventanas.
+2024-10-26 20:22:46,846 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:22:47,998 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:22:48,891 - INFO - Datos cargados.
+2024-10-26 20:22:48,945 - INFO - Creando ventanas.
+2024-10-26 20:22:52,476 - INFO - Ventanas creadas
+2024-10-26 20:22:52,557 - INFO - entrada escalada
+2024-10-26 20:22:52,558 - INFO - inicio prediccion
+2024-10-26 20:23:31,590 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:23:32,740 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:23:33,638 - INFO - Datos cargados.
+2024-10-26 20:23:33,693 - INFO - Creando ventanas.
+2024-10-26 20:23:37,171 - INFO - Ventanas creadas
+2024-10-26 20:23:37,244 - INFO - entrada escalada
+2024-10-26 20:23:37,245 - INFO - inicio prediccion
+2024-10-26 20:32:10,215 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:32:11,391 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:32:12,325 - INFO - Datos cargados.
+2024-10-26 20:32:12,333 - INFO - Creando ventanas.
+2024-10-26 20:32:15,668 - INFO - Ventanas creadas
+2024-10-26 20:32:15,743 - INFO - entrada escalada
+2024-10-26 20:32:15,744 - INFO - inicio prediccion
+2024-10-26 20:38:40,979 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:38:42,418 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:38:43,556 - INFO - Datos cargados.
+2024-10-26 20:38:43,565 - INFO - Creando ventanas.
+2024-10-26 20:38:44,477 - INFO - Ventanas creadas
+2024-10-26 20:38:44,497 - INFO - entrada escalada
+2024-10-26 20:38:44,500 - INFO - inicio prediccion
+2024-10-26 20:40:26,987 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:40:28,443 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:40:29,448 - INFO - Datos cargados.
+2024-10-26 20:40:29,458 - INFO - Creando ventanas.
+2024-10-26 20:40:30,181 - INFO - Ventanas creadas
+2024-10-26 20:41:25,886 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:41:27,123 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:41:28,106 - INFO - Datos cargados.
+2024-10-26 20:41:28,122 - INFO - Creando ventanas.
+2024-10-26 20:41:28,804 - INFO - Ventanas creadas
+2024-10-26 20:41:28,804 - INFO - inicio prediccion
+2024-10-26 20:42:54,048 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:42:55,284 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:42:56,275 - INFO - Datos cargados.
+2024-10-26 20:42:56,291 - INFO - Creando ventanas.
+2024-10-26 20:42:56,624 - INFO - Ventanas creadas
+2024-10-26 20:42:56,625 - INFO - inicio prediccion
+2024-10-26 20:47:46,240 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:47:50,299 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:47:50,762 - INFO - Datos cargados.
+2024-10-26 20:47:50,768 - INFO - Creando ventanas.
+2024-10-26 20:47:50,911 - INFO - Ventanas creadas
+2024-10-26 20:47:50,912 - INFO - inicio prediccion
+2024-10-26 20:48:58,974 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 20:48:59,521 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 20:48:59,956 - INFO - Datos cargados.
+2024-10-26 20:48:59,962 - INFO - Creando ventanas.
+2024-10-26 20:49:00,080 - INFO - Ventanas creadas
+2024-10-26 20:49:00,081 - INFO - inicio prediccion
+2024-10-26 21:04:12,109 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 21:04:12,685 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 21:04:13,121 - INFO - Datos cargados.
+2024-10-26 21:04:13,128 - INFO - Creando ventanas.
+2024-10-26 21:04:13,242 - INFO - Ventanas creadas
+2024-10-26 21:04:13,243 - INFO - inicio prediccion
+2024-10-26 21:12:58,904 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-10-26 21:12:59,793 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-10-26 21:13:00,714 - INFO - Datos cargados.
+2024-10-26 21:13:00,721 - INFO - Creando ventanas.
+2024-10-26 21:13:00,814 - INFO - Ventanas creadas
+2024-10-26 21:13:00,814 - INFO - inicio prediccion
