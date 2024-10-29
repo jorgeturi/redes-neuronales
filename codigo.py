@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
             #X_n = escalar_entrada(X,scal)
 
-
+            
             logging.info("inicio prediccion")
             #predicciones = modelo.predict(X_n, batch_size=1)
             modell = entrenar_modelo(Xtrain,ytrain, Xval, yval)

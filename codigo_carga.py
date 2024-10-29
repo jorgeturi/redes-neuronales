@@ -2,6 +2,7 @@ import logging
 from tools.logger_config import setup_logger
 import tensorflow as tf
 import numpy as np
+import matplotlib.pyplot as plt
 
 import os
 
@@ -55,30 +56,52 @@ if __name__ == "__main__":
             valores_reales = []
             predicciones = []
             errores = []
+            resultados = []
+            errores_totales = []
 
-            # Recorrer cada conjunto de predicciones y valores reales
-            for i in range(len(prediccionesval)):
-              # Obtener el valor real y la predicción
-                y_real = yval[i]
-                prediccion = prediccionesval[i]
-    
-                # Calcular el error
-                error = prediccion - y_real
-    
-                # Almacenar los resultados
-                valores_reales.append(y_real.flatten())
-                predicciones.append(prediccion.flatten())
-                errores.append(error.flatten())
+            for valor in range(len(yval)):
+                y_real = yval[valor]
+                prediccion = prediccionesval[valor]
+                
+                # Calcular errores y almacenarlos
+                errores = []
+                for i in range(len(y_real)):
+                    error = prediccion[i] - y_real[i]
+                    errores.append(error)
+                    resultados.append({
+                        'valor': valor,
+                        'yval': y_real[i],
+                        'prediccion': prediccion[i],
+                        'error': error
+                    })
 
-            #            Convertir listas a DataFrame
-            resultados = pd.DataFrame({
-                'yval': [list(y) for y in valores_reales],          # Valores reales
-                'predicciones': [list(p) for p in predicciones],    # Predicciones
-                'error': [list(e) for e in errores]                 # Errores
-            })
+                # Calcular el error promedio para el conjunto actual
+                error_promedio = np.mean(np.abs(errores))
+                errores_totales.append(error_promedio)
 
-            # Guardar el DataFrame en un archivo CSV
-            resultados.to_csv('predicciones.csv', index=False)
+            # Convertir a DataFrame
+            df_resultados = pd.DataFrame(resultados)
 
-            print("Archivo 'predicciones.csv' creado con éxito.")
+            # Calcular el error promedio total
+            error_promedio_total = np.mean(np.abs(df_resultados['error']))
 
+            # Graficar error promedio por conjunto
+            plt.figure(figsize=(10, 5))
+            plt.scatter(range(len(errores_totales)), errores_totales, color='skyblue')
+            plt.title('Error Promedio por Conjunto')
+            plt.xlabel('Conjunto de Valores')
+            plt.ylabel('Error Promedio')
+            plt.axhline(0, color='gray', linestyle='--', linewidth=0.5)
+            plt.grid()
+
+            # Agregar el error promedio total al gráfico
+            plt.annotate(f'Error Promedio Total: {error_promedio_total:.2f}', xy=(0, error_promedio_total), 
+                        xytext=(1, error_promedio_total + 0.5),
+                        arrowprops=dict(facecolor='black', shrink=0.05))
+
+            plt.show()
+
+            # Guardar resultados en CSV
+            df_resultados.to_csv('predicciones_detalle.csv', index=False)
+
+            print("Archivo 'predicciones_detalle.csv' creado con éxito.")
