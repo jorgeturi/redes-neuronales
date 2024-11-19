@@ -124,12 +124,12 @@ def codificar_tiempo(dt):
     dt2['dia_sen'] = np.sin(2 * np.pi * dt2['tiempo_del_dia'] / 24)
     dt2['dia_cos'] = np.cos(2 * np.pi * dt2['tiempo_del_dia'] / 24)
 
-    # Codificación del día del año
-    dt2['dia_del_año'] = dt2['timestamp'].dt.dayofyear
-    dt2['mes_sen'] = np.sin(2 * np.pi * dt2['dia_del_año'] / 365)
-    dt2['mes_cos'] = np.cos(2 * np.pi * dt2['dia_del_año'] / 365)
+    dt2['dia_semana'] = dt2['timestamp'].dt.dayofweek
+    dt2['sem_sen'] = np.sin(2 * np.pi * dt2['dia_semana'] / 7)
+    dt2['sem_cos'] = np.cos(2 * np.pi * dt2['dia_semana'] / 7)
 
-    dt2 = dt2[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos']]
+
+    dt2 = dt2[['activa', 'dia_sen', 'dia_cos', 'sem_sen', 'sem_cos']]
     logging.info("tiempo codificado.")
 
     return dt2
@@ -198,6 +198,85 @@ def cargar_datos(archivo_potencias='potencias.csv', archivo_corrientes='corrient
         return None
 
 
+
+
+def cargar_datos_especificos(archivo_potencias='potencias.csv', archivo_corrientes='corrientes.csv', dias_semanales=None, horas=None):
+    """
+    Carga los datos desde los archivos CSV, filtra según días de la semana y horas, y registra el resultado en el log.
+
+    Args:
+    archivo_potencias (str): La ruta al archivo de potencias (csv).
+    archivo_corrientes (str): La ruta al archivo de corrientes (csv).
+    dias_semanales (list): Lista de días de la semana a cargar (0=domingo, 1=lunes, ..., 6=sábado). 
+                           Si es None, no filtra por días de la semana.
+    horas (list): Lista de horas (0-23) a cargar. Si es None, no filtra por horas.
+    
+    Returns:
+    final_df: dataframe con los datos si la carga fue exitosa, None sino.
+    """
+    try:
+        # Leer encabezados para verificar que los archivos se pueden abrir
+        encabezados_corrientes = pd.read_csv(archivo_corrientes, nrows=0).columns
+        encabezados_potencias = pd.read_csv(archivo_potencias, nrows=0).columns
+        
+        fila_inicio = 1
+        numero_filas = 120000  # Número de filas que deseas cargar
+        
+        # Leer los archivos CSV
+        corrientes = pd.read_csv(archivo_corrientes, skiprows=fila_inicio, nrows=numero_filas, header=None, names=encabezados_corrientes)
+        potencias = pd.read_csv(archivo_potencias, skiprows=fila_inicio, nrows=numero_filas, header=None, names=encabezados_potencias)
+
+        # Convertir la columna 'timestamp' a datetime
+        corrientes['timestamp'] = pd.to_datetime(corrientes['timestamp'])
+        potencias['timestamp'] = pd.to_datetime(potencias['timestamp'])
+
+        # Unir los dataframes en base al ID y timestamp
+        df_unido = pd.merge(corrientes, potencias, on=['id', 'timestamp'])
+
+        # Separar la columna de timestamp en año, mes, día, hora, minuto
+        df_unido['año'] = df_unido['timestamp'].dt.year
+        df_unido['mes'] = df_unido['timestamp'].dt.month
+        df_unido['dia'] = df_unido['timestamp'].dt.day
+        df_unido['hora'] = df_unido['timestamp'].dt.hour
+        df_unido['minuto'] = df_unido['timestamp'].dt.minute
+
+        # Codificación del tiempo del día
+        df_unido['tiempo_del_dia'] = df_unido['hora'] + df_unido['minuto'] / 60.0
+        df_unido['dia_sen'] = np.sin(2 * np.pi * df_unido['tiempo_del_dia'] / 24)
+        df_unido['dia_cos'] = np.cos(2 * np.pi * df_unido['tiempo_del_dia'] / 24)
+
+        # Codificación del día del año
+        df_unido['dia_del_año'] = df_unido['timestamp'].dt.dayofyear
+        df_unido['mes_sen'] = np.sin(2 * np.pi * df_unido['dia_del_año'] / 365)
+        df_unido['mes_cos'] = np.cos(2 * np.pi * df_unido['dia_del_año'] / 365)
+
+        # Filtrar por días de la semana
+        if dias_semanales is not None:
+            df_unido = df_unido[df_unido['timestamp'].dt.dayofweek.isin(dias_semanales)]
+
+        # Filtrar por horas
+        if horas is not None:
+            df_unido = df_unido[df_unido['hora'].isin(horas)]
+
+        # Seleccionar y reorganizar las columnas en el formato deseado
+        final_df = df_unido[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos']]
+
+        logging.info("Datos cargados y filtrados.")
+
+        if np.any(np.isnan(final_df)):
+            print("Hay valores NaN en los datos.")
+        if np.any(np.isinf(final_df)):
+            print("Hay valores infinitos en los datos.")
+        
+        return final_df
+    
+    except Exception as e:
+        logging.error(f'Error al cargar los datos: {e}')
+        return None
+
+
+
+
 def escalar_datos(Xtrain, ytrain, scalers):
     Xtrain_n = Xtrain.copy()
 
@@ -233,50 +312,59 @@ def escalar_entrada(Xtrain, scalers):
 
 
 
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 import numpy as np
-import pandas as pd
 import tensorflow as tf
-from tensorflow.keras.layers import LSTM, Dropout, BatchNormalization, Dense, Bidirectional
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.layers import LSTM, Bidirectional, Dropout, BatchNormalization, Dense
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.optimizers.schedules import PiecewiseConstantDecay
 from tensorflow.keras.initializers import GlorotUniform
+from tensorflow.keras.callbacks import EarlyStopping
 
-def entrenar_modelo(Xtrain, ytrain, Xval, yval):
+def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.h5'):
     # Asegurar reproducibilidad
     np.random.seed(47)
     tf.random.set_seed(47)
     initializer = GlorotUniform(seed=47)
 
     # Define los intervalos y los valores de learning rate
-    boundaries = [5, 10, 15, 60, 115, 200]  # Los límites de los intervalos (épocas en este caso)
-    values = [0.02, 0.025, 0.005, 0.001, 0.0005, 0.0001, 0.00005]  # Learning rates correspondientes a los intervalos
+    boundaries = [1, 2, 3, 10, 20, 250]  # Los límites de los intervalos (épocas en este caso)
+    values = [0.004, 0.002, 0.001, 0.0001, 0.00001, 0.00005, 0.000001]  # Learning rates correspondientes a los intervalos
 
     # Crea el scheduler de learning rate
-    lr_schedule = PiecewiseConstantDecay(
+    lr_schedule = tf.keras.optimizers.schedules.PiecewiseConstantDecay(
         boundaries=boundaries,
         values=values
     )
-
     # Crear el modelo LSTM
     model = Sequential()
 
-    model.add(Bidirectional(LSTM(150, return_sequences=True, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer)))
+    model.add(Bidirectional(LSTM(64, return_sequences=False, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer ) ))
     model.add(Dropout(0.1))
     model.add(BatchNormalization())
-    model.add(Bidirectional(LSTM(50, return_sequences=False, kernel_initializer=initializer)))
-    model.add(Dense(50, kernel_initializer=initializer))
-    model.add(Dense(ytrain.shape[1], kernel_initializer=initializer, activation='linear'))
+    model.add(Dense(ytrain.shape[1], activation='linear', kernel_initializer=initializer))
 
     # Compilar el modelo con el optimizador personalizado
-    optimizer = Adam(learning_rate=lr_schedule, clipnorm=0.75)
-
+    optimizer = Adam(learning_rate=lr_schedule, clipnorm=1)
     model.compile(optimizer=optimizer, loss='mse')
-    early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
-    # Entrenar el modelo con datos de validación y EarlyStopping
-    model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=4,
-              validation_data=(Xval, yval), callbacks=[early_stopping])
+    # EarlyStopping para evitar sobreajuste
+    early_stopping = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
+
+    # ModelCheckpoint para guardar el modelo durante el entrenamiento
+    checkpoint = ModelCheckpoint(path_guardado, monitor='val_loss', save_best_only=True, verbose=1)
+
+    try:
+        # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
+        model.fit(Xtrain, ytrain, epochs=300, verbose=1, batch_size=4,
+                  validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
+    except MemoryError as e:
+        print("Error de memoria: ", e)
+        print("Guardando el modelo hasta el último punto alcanzado...")
+        model.save(path_guardado)  # Guarda el modelo al momento de fallo
+    except Exception as e:
+        print(f"Se produjo un error: {e}")
+        print("Guardando el modelo hasta el último punto alcanzado...")
+        model.save(path_guardado)  # Guarda el modelo si ocurre otro error
 
     return model

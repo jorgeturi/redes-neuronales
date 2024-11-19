@@ -1,0 +1,69 @@
+Se corto el entrenamiento por actualización de pc
+4*24*2,4*12 salida
+datos
+
+X, y = crear_ventana(df[0:100000], 4*24*2,4*12)
+            
+            inicio_train = 0
+            fin_train = 75000
+            inicio_val = fin_train+1
+            fin_val = fin_train+1+25000
+
+
+
+entrenado con 
+
+
+def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.h5'):
+    # Asegurar reproducibilidad
+    np.random.seed(47)
+    tf.random.set_seed(47)
+    initializer = GlorotUniform(seed=47)
+
+    # Define los intervalos y los valores de learning rate
+    boundaries = [2, 4, 5, 55, 80, 90]  # Los límites de los intervalos (épocas en este caso)
+    values = [0.02, 0.025, 0.005, 0.001, 0.0005, 0.0001, 0.00005]  # Learning rates correspondientes a los intervalos
+
+    # Crea el scheduler de learning rate
+    lr_schedule = tf.keras.optimizers.schedules.PiecewiseConstantDecay(
+        boundaries=boundaries,
+        values=values
+    )
+
+    # Crear el modelo LSTM
+    model = Sequential()
+
+    model.add(Bidirectional(LSTM(100, return_sequences=True, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer)))
+    model.add(Dropout(0.1))
+    model.add(BatchNormalization())
+    model.add(Bidirectional(LSTM(80, return_sequences=True, kernel_initializer=initializer)))
+    model.add(Dropout(0.1))
+    model.add(BatchNormalization())
+    model.add(Bidirectional(LSTM(50, return_sequences=False, kernel_initializer=initializer)))
+    model.add(Dense(50, kernel_initializer=initializer))
+    model.add(Dense(ytrain.shape[1], kernel_initializer=initializer, activation='linear'))
+
+    # Compilar el modelo con el optimizador personalizado
+    optimizer = Adam(learning_rate=lr_schedule, clipnorm=0.75)
+    model.compile(optimizer=optimizer, loss='mse')
+
+    # EarlyStopping para evitar sobreajuste
+    early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+
+    # ModelCheckpoint para guardar el modelo durante el entrenamiento
+    checkpoint = ModelCheckpoint(path_guardado, monitor='val_loss', save_best_only=True, verbose=1)
+
+    try:
+        # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
+        model.fit(Xtrain, ytrain, epochs=100, verbose=1, batch_size=64,
+                  validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
+    except MemoryError as e:
+        print("Error de memoria: ", e)
+        print("Guardando el modelo hasta el último punto alcanzado...")
+        model.save(path_guardado)  # Guarda el modelo al momento de fallo
+    except Exception as e:
+        print(f"Se produjo un error: {e}")
+        print("Guardando el modelo hasta el último punto alcanzado...")
+        model.save(path_guardado)  # Guarda el modelo si ocurre otro error
+
+    return model

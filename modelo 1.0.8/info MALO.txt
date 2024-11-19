@@ -1,0 +1,91 @@
+datos mezclados. muy mal error
+Epoch 26: val_loss improved from 1170.50464 to 1168.56226, saving model to modelo_entrenado.h5
+5000/5000 [==============================] - 1446s 289ms/step - loss: 116.6668 - val_loss: 1168.5623
+
+
+modelo = cargar_modelo("modelo_trained.keras")
+    if modelo is not None:  #si consegui el modelo
+        modelo.summary()  
+        scal = cargar_escaladores("scalers.pkl")
+        if scal is not None:
+            print("scalers:", scal)
+            #df = leer_data_crear_df()
+            df = cargar_datos()
+            #df = codificar_tiempo(df)
+            #X= crear_ventana_dataset(df,4)
+            X, y = crear_ventana(df[40000:120000], 4*24*3,4*6)
+            
+            inicio_train = 0
+            fin_train = 5000
+            inicio_val = fin_train+1
+            fin_val = fin_train+1+5000
+            # conjunto de validación
+            Xval = X[inicio_val:fin_val]
+            yval = y[inicio_val:fin_val]
+            #conjunto de entrenamiento
+            Xtrain = X[inicio_train:fin_train]
+            ytrain = y[inicio_train:fin_train]
+
+            #X_n = escalar_entrada(X,scal)
+            from sklearn.utils import shuffle
+
+            Xtrain, ytrain = shuffle(Xtrain, ytrain, random_state=0)
+            #Xval, yval = shuffle(Xval, yval, random_state=0)
+
+
+modelo
+
+
+def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.h5'):
+    # Asegurar reproducibilidad
+    np.random.seed(47)
+    tf.random.set_seed(47)
+    initializer = GlorotUniform(seed=47)
+
+    # Define los intervalos y los valores de learning rate
+    boundaries = [1, 3, 5, 10, 50, 90]  # Los límites de los intervalos (épocas en este caso)
+    values = [0.02, 0.015, 0.02, 0.01, 0.001, 0.00015, 0.0001]  # Learning rates correspondientes a los intervalos
+
+    # Crea el scheduler de learning rate
+    lr_schedule = tf.keras.optimizers.schedules.PiecewiseConstantDecay(
+        boundaries=boundaries,
+        values=values
+    )
+    # Crear el modelo LSTM
+    model = Sequential()
+
+    model.add(LSTM(200, return_sequences=True, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer))
+    #model.add(Dropout(0.1))
+    model.add(BatchNormalization())
+    model.add(LSTM(100, return_sequences=True, kernel_initializer=initializer))
+    #model.add(Dropout(0.1))
+    model.add(BatchNormalization())
+    model.add(LSTM(50, return_sequences=False, kernel_initializer=initializer))
+    #model.add(Dropout(0.1))
+    model.add(BatchNormalization())
+    model.add(Dense(ytrain.shape[1], kernel_initializer=initializer, activation='linear'))
+
+    # Compilar el modelo con el optimizador personalizado
+    optimizer = Adam(learning_rate=lr_schedule, clipnorm=0.75)
+    model.compile(optimizer=optimizer, loss='mse')
+
+    # EarlyStopping para evitar sobreajuste
+    early_stopping = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
+
+    # ModelCheckpoint para guardar el modelo durante el entrenamiento
+    checkpoint = ModelCheckpoint(path_guardado, monitor='val_loss', save_best_only=True, verbose=1)
+
+    try:
+        # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
+        model.fit(Xtrain, ytrain, epochs=100, verbose=1, batch_size=1,
+                  validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
+    except MemoryError as e:
+        print("Error de memoria: ", e)
+        print("Guardando el modelo hasta el último punto alcanzado...")
+        model.save(path_guardado)  # Guarda el modelo al momento de fallo
+    except Exception as e:
+        print(f"Se produjo un error: {e}")
+        print("Guardando el modelo hasta el último punto alcanzado...")
+        model.save(path_guardado)  # Guarda el modelo si ocurre otro error
+
+    return model

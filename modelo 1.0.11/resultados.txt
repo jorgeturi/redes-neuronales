@@ -1,0 +1,3 @@
+datos que nunca vio, ni train ni val. de lunes a viernes
+Error promedio global: -3.41
+Desviación estándar global: 17.16

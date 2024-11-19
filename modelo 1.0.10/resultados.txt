@@ -1,0 +1,2 @@
+Error promedio global: -3.88
+Desviación estándar global: 11.89
