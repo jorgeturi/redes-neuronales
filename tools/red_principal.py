@@ -233,15 +233,8 @@ def cargar_datos_especificos(archivo_potencias='potencias.csv', archivo_corrient
         # Unir los dataframes en base al ID y timestamp
         df_unido = pd.merge(corrientes, potencias, on=['id', 'timestamp'])
 
-        # Separar la columna de timestamp en año, mes, día, hora, minuto
-        df_unido['año'] = df_unido['timestamp'].dt.year
-        df_unido['mes'] = df_unido['timestamp'].dt.month
-        df_unido['dia'] = df_unido['timestamp'].dt.day
-        df_unido['hora'] = df_unido['timestamp'].dt.hour
-        df_unido['minuto'] = df_unido['timestamp'].dt.minute
-
         # Codificación del tiempo del día
-        df_unido['tiempo_del_dia'] = df_unido['hora'] + df_unido['minuto'] / 60.0
+        df_unido['tiempo_del_dia'] = df_unido['timestamp'].dt.hour + df_unido['timestamp'].dt.minute / 60.0
         df_unido['dia_sen'] = np.sin(2 * np.pi * df_unido['tiempo_del_dia'] / 24)
         df_unido['dia_cos'] = np.cos(2 * np.pi * df_unido['tiempo_del_dia'] / 24)
 
@@ -250,18 +243,24 @@ def cargar_datos_especificos(archivo_potencias='potencias.csv', archivo_corrient
         df_unido['mes_sen'] = np.sin(2 * np.pi * df_unido['dia_del_año'] / 365)
         df_unido['mes_cos'] = np.cos(2 * np.pi * df_unido['dia_del_año'] / 365)
 
+        # Normalización de la codificación cíclica a rango [0, 1]
+        df_unido['dia_sen'] = (df_unido['dia_sen'] + 1) / 2
+        df_unido['dia_cos'] = (df_unido['dia_cos'] + 1) / 2
+        df_unido['mes_sen'] = (df_unido['mes_sen'] + 1) / 2
+        df_unido['mes_cos'] = (df_unido['mes_cos'] + 1) / 2
+
         # Filtrar por días de la semana
         if dias_semanales is not None:
             df_unido = df_unido[df_unido['timestamp'].dt.dayofweek.isin(dias_semanales)]
 
         # Filtrar por horas
         if horas is not None:
-            df_unido = df_unido[df_unido['hora'].isin(horas)]
+            df_unido = df_unido[df_unido['timestamp'].dt.hour.isin(horas)]
 
         # Seleccionar y reorganizar las columnas en el formato deseado
         final_df = df_unido[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos']]
 
-        logging.info("Datos cargados y filtrados.")
+        logging.info(f"Datos cargados y filtrados. Total de registros: {len(final_df)}")
 
         if np.any(np.isnan(final_df)):
             print("Hay valores NaN en los datos.")
@@ -328,7 +327,7 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
     initializer = GlorotUniform(seed=47)
 
     # Define los intervalos y los valores de learning rate
-    boundaries = [1, 2, 3, 10, 20, 250]  # Los límites de los intervalos (épocas en este caso)
+    boundaries = [1, 2, 3, 50, 100, 250]  # Los límites de los intervalos (épocas en este caso)
     values = [0.004, 0.002, 0.001, 0.0001, 0.00001, 0.00005, 0.000001]  # Learning rates correspondientes a los intervalos
 
     # Crea el scheduler de learning rate
@@ -339,7 +338,10 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
     # Crear el modelo LSTM
     model = Sequential()
 
-    model.add(Bidirectional(LSTM(64, return_sequences=False, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer ) ))
+    model.add(Bidirectional(LSTM(100, return_sequences=True, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer ) ))
+    model.add(Dropout(0.1))
+    model.add(BatchNormalization())
+    model.add(Bidirectional(LSTM(50, return_sequences=False, kernel_initializer=initializer ) ))
     model.add(Dropout(0.1))
     model.add(BatchNormalization())
     model.add(Dense(ytrain.shape[1], activation='linear', kernel_initializer=initializer))
@@ -356,7 +358,7 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
 
     try:
         # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
-        model.fit(Xtrain, ytrain, epochs=300, verbose=1, batch_size=4,
+        model.fit(Xtrain, ytrain, epochs=10, verbose=1, batch_size=1,
                   validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
     except MemoryError as e:
         print("Error de memoria: ", e)
@@ -366,5 +368,58 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
         print(f"Se produjo un error: {e}")
         print("Guardando el modelo hasta el último punto alcanzado...")
         model.save(path_guardado)  # Guarda el modelo si ocurre otro error
+
+    return model
+
+
+
+from keras.layers import Attention, Concatenate, LSTM, Bidirectional, Dropout, BatchNormalization, Dense, Input
+from keras.models import Model
+from keras.layers import MultiHeadAttention
+
+def entrenar_modelo_con_atencion(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.h5'):
+    # Asegurar reproducibilidad
+    np.random.seed(47)
+    tf.random.set_seed(47)
+    initializer = GlorotUniform(seed=47)
+
+    # Definir el modelo
+    inputs = Input(shape=(Xtrain.shape[1], Xtrain.shape[2]))  # (timesteps, features)
+    
+    # Capa LSTM Bidireccional
+    lstm_out = Bidirectional(LSTM(50, return_sequences=True, kernel_initializer=initializer))(inputs)
+    lstm_out = Dropout(0.1)(lstm_out)
+    lstm_out = BatchNormalization()(lstm_out)
+    
+    # Aplicar el mecanismo de atención sobre la salida LSTM
+    attention_out = MultiHeadAttention(num_heads=16, key_dim=5)(lstm_out, lstm_out)
+    
+    # Agregar más capas LSTM si es necesario
+    lstm_out = Bidirectional(LSTM(20, return_sequences=False, kernel_initializer=initializer))(attention_out)
+    lstm_out = Dropout(0.1)(lstm_out)
+    lstm_out = BatchNormalization()(lstm_out)
+    
+    # Capa de salida
+    output = Dense(ytrain.shape[1], activation='linear', kernel_initializer=initializer)(lstm_out)
+    
+    # Crear el modelo
+    model = Model(inputs=inputs, outputs=output)
+
+    # Definir el optimizador y la compilación del modelo
+    boundaries = [1, 2, 3, 50, 100, 250]
+    values = [0.001, 0.001, 0.0001, 0.00001, 0.00001, 0.00005, 0.000001]
+    lr_schedule = tf.keras.optimizers.schedules.PiecewiseConstantDecay(
+        boundaries=boundaries,
+        values=values
+    )
+    optimizer = Adam(learning_rate=lr_schedule, clipnorm=1)
+    model.compile(optimizer=optimizer, loss='mse')
+
+    # Configuración de callbacks
+    early_stopping = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
+    checkpoint = ModelCheckpoint(path_guardado, monitor='val_loss', save_best_only=True, verbose=1)
+
+    # Entrenamiento del modelo
+    model.fit(Xtrain, ytrain, epochs=5, batch_size=1, validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
 
     return model

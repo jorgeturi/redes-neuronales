@@ -1,0 +1,34 @@
+Error promedio global: -5.51
+Desviación estándar global: 14.43
+Error relativo porcentual promedio global: 51.00%
+
+aumento hs a +100 a ver que cambia (200hs)
+
+Error promedio global: -4.24
+Desviación estándar global: 16.29
+Error relativo porcentual promedio global: 49.53%
+
+agrego una capa de 50
+
+Error promedio global: -8.36
+Desviación estándar global: 32.52
+Error relativo porcentual promedio global: 92.08%
+
+aumento a 500 y 250 hd
+
+Error promedio global: 0.04
+Desviación estándar global: 26.03
+Error relativo porcentual promedio global: 77.91%
+
+
+
+
+1 vez
+Error promedio global: -15.02
+Desviación estándar global: 40.33
+Error relativo porcentual promedio global: 186.70%
+devuelta sin cambiar nada
+
+Error promedio global: -15.70
+Desviación estándar global: 38.58
+Error relativo porcentual promedio global: 169.61%

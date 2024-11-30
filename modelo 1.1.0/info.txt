@@ -1,0 +1,103 @@
+TRAIN daba bien 0.02 pero al testear horrible
+
+
+ X, y = crear_ventana(df[23000:80000], 4*24,4*12)
+            
+            inicio_train = 0
+            fin_train = 15000
+            inicio_val = fin_train+1
+            fin_val = fin_train+1+5000
+            # conjunto de validación
+            Xval = X[inicio_val:fin_val]
+            yval = y[inicio_val:fin_val]
+            #conjunto de entrenamiento
+            Xtrain = X[inicio_train:fin_train]
+            ytrain = y[inicio_train:fin_train]
+
+            from sklearn.preprocessing import MinMaxScaler
+            scaleractiva = MinMaxScaler(feature_range=(-1, 1))
+            Xtrain_n = Xtrain.copy()
+            Xtrain_n[:, :, 0] = scaleractiva.fit_transform(Xtrain[:, :, 0])
+            Xval_n = Xval.copy()
+            Xval_n[:, :, 0] = scaleractiva.transform(Xval[:, :, 0])
+            print(Xval_n)
+
+            salidas = MinMaxScaler(feature_range=(-1, 1))
+            ytrain_n = ytrain.copy()
+            ytrain_n = salidas.fit_transform(ytrain)
+            yval_n = salidas.transform(yval)
+            print(yval_n)
+
+            
+            import pickle
+            scalers = {'scaleractiva': scaleractiva, 'salidas': salidas}
+
+            with open('scalers.pkl', 'wb') as f:
+                pickle.dump(scalers, f)
+
+
+            #X_n = escalar_entrada(X,scal)
+            from sklearn.utils import shuffle
+
+            Xtrain_n, ytrain_n = shuffle(Xtrain_n, ytrain_n, random_state=0)
+            #Xval, yval = shuffle(Xval, yval, random_state=0)
+
+
+            
+            logging.info("inicio prediccion")
+            #predicciones = modelo.predict(X_n, batch_size=1)
+            modell = entrenar_modelo(Xtrain_n,ytrain_n, Xval_n, yval_n)
+            modell.save('modelo.keras')
+            print("fin prediccion")
+            #predicciones = modelo.predict(X_n, b
+
+
+
+
+def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.h5'):
+    # Asegurar reproducibilidad
+    np.random.seed(47)
+    tf.random.set_seed(47)
+    initializer = GlorotUniform(seed=47)
+
+    # Define los intervalos y los valores de learning rate
+    boundaries = [1, 2, 3, 10, 20, 250]  # Los límites de los intervalos (épocas en este caso)
+    values = [0.004, 0.002, 0.001, 0.0001, 0.00001, 0.00005, 0.000001]  # Learning rates correspondientes a los intervalos
+
+    # Crea el scheduler de learning rate
+    lr_schedule = tf.keras.optimizers.schedules.PiecewiseConstantDecay(
+        boundaries=boundaries,
+        values=values
+    )
+    # Crear el modelo LSTM
+    model = Sequential()
+
+    model.add(Bidirectional(LSTM(64, return_sequences=False, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer ) ))
+    model.add(Dropout(0.1))
+    model.add(BatchNormalization())
+    model.add(Dense(ytrain.shape[1], activation='linear', kernel_initializer=initializer))
+
+    # Compilar el modelo con el optimizador personalizado
+    optimizer = Adam(learning_rate=lr_schedule, clipnorm=1)
+    model.compile(optimizer=optimizer, loss='mse')
+
+    # EarlyStopping para evitar sobreajuste
+    early_stopping = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
+
+    # ModelCheckpoint para guardar el modelo durante el entrenamiento
+    checkpoint = ModelCheckpoint(path_guardado, monitor='val_loss', save_best_only=True, verbose=1)
+
+    try:
+        # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
+        model.fit(Xtrain, ytrain, epochs=300, verbose=1, batch_size=4,
+                  validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
+    except MemoryError as e:
+        print("Error de memoria: ", e)
+        print("Guardando el modelo hasta el último punto alcanzado...")
+        model.save(path_guardado)  # Guarda el modelo al momento de fallo
+    except Exception as e:
+        print(f"Se produjo un error: {e}")
+        print("Guardando el modelo hasta el último punto alcanzado...")
+        model.save(path_guardado)  # Guarda el modelo si ocurre otro error
+
+    return model
