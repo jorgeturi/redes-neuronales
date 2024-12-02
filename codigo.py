@@ -19,20 +19,20 @@ if __name__ == "__main__":
             print("scalers:", scal)
             #df = leer_data_crear_df()
             df = cargar_datos()
-            dias = [1,2,3,4,5]  # Lunes, Miércoles, Viernes
-            horas = [8,9, 10, 11, 12,13,14,15,16]  # De 9 a 12 horas
+            dias = [0,1,2,3,4,5,6,7]  # Lunes, Miércoles, Viernes
+            horas = [1,2,3,4,5,6,7,8,9, 10, 11, 12,13,14,15,16,17,18,19,20,21,22,23]  # De 9 a 12 horas
             df = cargar_datos_especificos('potencias.csv', 'corrientes.csv', dias_semanales=dias, horas=horas)
             #df = codificar_tiempo(df)
             #X= crear_ventana_dataset(df,4)
             print(df.shape)
-            X, y = crear_ventana(df[8000:80000], 4*4,4)
+            X, y = crear_ventana(df[40000:120000], 4,1)
             
             inicio_train = 0
-            fin_train = 3000
+            fin_train = 25000
             inicio_val = fin_train+1
-            fin_val = fin_train+1+2000
+            fin_val = fin_train+1+10000
             inicio_test = fin_val+1
-            fin_test = inicio_test+1+3000
+            fin_test = inicio_test+1+2000
             # conjunto de validación
             Xval = X[inicio_val:fin_val]
             yval = y[inicio_val:fin_val]
@@ -68,7 +68,8 @@ if __name__ == "__main__":
             with open('scalers.pkl', 'wb') as f:
                 pickle.dump(scalers, f)
 
-
+            print("media ", scaleractiva.data_min_)
+            print("desv ", scaleractiva.data_max_)
             #X_n = escalar_entrada(X,scal)
             from sklearn.utils import shuffle
 
@@ -82,11 +83,11 @@ if __name__ == "__main__":
 
 
 
-            
-            modell = entrenar_modelo_con_atencion(Xtrain_n,ytrain_n, Xval_n, yval_n)
+            modell = entrenar_modelo(Xtrain_n,ytrain_n, Xval_n, yval_n)
+            #modell = entrenar_modelo_con_atencion(Xtrain_n,ytrain_n, Xval_n, yval_n)
             
 
-            modell.save('modelo.keras')
+            modell.save('modelo')
             print("fin prediccion")
             #predicciones = modelo.predict(X_n, batch_size=1)
 
@@ -97,10 +98,17 @@ if __name__ == "__main__":
 
 
 
-            prediccionesTest = modell.predict(Xtest_n, batch_size=1)  # Esto sería lo que se debe hacer si aún no se ha calculado
+            prediccionesTest = modell.predict(Xtrain_n)  # Esto sería lo que se debe hacer si aún no se ha calculado
             prediccionesTest = salidas.inverse_transform(prediccionesTest)
+            
+            print("Tamaño de prediccionesTest:", len(prediccionesTest))
+            print("Tamaño de yTest:", len(ytest))
+
             print("fin prediccion")
-            yTest = ytest
+            #######################3
+            #### VOLVER A PONER ESTO CUANDO NO PREDIGA CON LOS DE TRAIN
+            #yTest = ytest
+            yTest = ytrain
 
             import pandas as pd
 
@@ -175,6 +183,7 @@ if __name__ == "__main__":
             print(f"Desviación estándar global: {desviacion_estandar_global:.2f}")
             print(f"Error relativo porcentual promedio global: {error_relativo_porcentual_promedio:.2f}%")
             print("Resultados guardados en 'resultados_predicciones_con_datos.csv'")
+
 
 
 

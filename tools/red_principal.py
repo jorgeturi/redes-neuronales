@@ -57,6 +57,8 @@ def crear_ventana(dataset, ventana_entrada, ventana_salida):
 
     # Extraer las características necesarias
     features = dataset[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos']].values
+    #features = dataset[['activa']].values
+
 
     # Calcular el número total de ventanas que se pueden crear
     total_muestras = len(dataset) - ventana_entrada - ventana_salida + 1
@@ -259,6 +261,8 @@ def cargar_datos_especificos(archivo_potencias='potencias.csv', archivo_corrient
 
         # Seleccionar y reorganizar las columnas en el formato deseado
         final_df = df_unido[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos']]
+        #final_df = df_unido[['activa']]
+
 
         logging.info(f"Datos cargados y filtrados. Total de registros: {len(final_df)}")
 
@@ -315,10 +319,13 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Bidirectional, Dropout, BatchNormalization, Dense
+from tensorflow.keras.layers import LSTM, Bidirectional, Dropout, BatchNormalization, Dense, GlobalAveragePooling1D
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.initializers import GlorotUniform
 from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.regularizers import l2
+from tensorflow.keras.initializers import HeNormal
+
 
 def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.h5'):
     # Asegurar reproducibilidad
@@ -327,8 +334,8 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
     initializer = GlorotUniform(seed=47)
 
     # Define los intervalos y los valores de learning rate
-    boundaries = [1, 2, 3, 50, 100, 250]  # Los límites de los intervalos (épocas en este caso)
-    values = [0.004, 0.002, 0.001, 0.0001, 0.00001, 0.00005, 0.000001]  # Learning rates correspondientes a los intervalos
+    boundaries = [1, 2, 20, 80, 140, 250]  # Los límites de los intervalos (épocas en este caso)
+    values = [0.005, 0.002, 0.001, 0.0001, 0.00001, 0.00005, 0.000001]  # Learning rates correspondientes a los intervalos
 
     # Crea el scheduler de learning rate
     lr_schedule = tf.keras.optimizers.schedules.PiecewiseConstantDecay(
@@ -338,17 +345,24 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
     # Crear el modelo LSTM
     model = Sequential()
 
-    model.add(Bidirectional(LSTM(100, return_sequences=True, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer ) ))
-    model.add(Dropout(0.1))
+    model.add(LSTM(256, return_sequences=True, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer ) )
+    #model.add(Dropout(0.1))
     model.add(BatchNormalization())
-    model.add(Bidirectional(LSTM(50, return_sequences=False, kernel_initializer=initializer ) ))
-    model.add(Dropout(0.1))
+
+    #model.add(Dense(128, activation='relu', kernel_initializer=initializer))
+    #model.add(Dropout(0.2)) 
+    model.add(LSTM(128, return_sequences=True, kernel_initializer=initializer ) )
+    #model.add(Dropout(0.1))
     model.add(BatchNormalization())
-    model.add(Dense(ytrain.shape[1], activation='linear', kernel_initializer=initializer))
+    model.add(LSTM(64, return_sequences=False, kernel_initializer=initializer ) )
+    #model.add(Dropout(0.1))
+    model.add(BatchNormalization())
+
+    model.add(Dense(ytrain.shape[1], activation="sigmoid"))
 
     # Compilar el modelo con el optimizador personalizado
     optimizer = Adam(learning_rate=lr_schedule, clipnorm=1)
-    model.compile(optimizer=optimizer, loss='mse')
+    model.compile(optimizer=optimizer, loss='huber_loss')
 
     # EarlyStopping para evitar sobreajuste
     early_stopping = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
@@ -358,7 +372,7 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
 
     try:
         # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
-        model.fit(Xtrain, ytrain, epochs=10, verbose=1, batch_size=1,
+        model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=4,
                   validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
     except MemoryError as e:
         print("Error de memoria: ", e)
@@ -387,27 +401,26 @@ def entrenar_modelo_con_atencion(Xtrain, ytrain, Xval, yval, path_guardado='mode
     inputs = Input(shape=(Xtrain.shape[1], Xtrain.shape[2]))  # (timesteps, features)
     
     # Capa LSTM Bidireccional
-    lstm_out = Bidirectional(LSTM(50, return_sequences=True, kernel_initializer=initializer))(inputs)
+    lstm_out = Bidirectional(LSTM(64, return_sequences=True, kernel_initializer=initializer, kernel_regularizer=l2(0.01)))(inputs)
     lstm_out = Dropout(0.1)(lstm_out)
     lstm_out = BatchNormalization()(lstm_out)
     
     # Aplicar el mecanismo de atención sobre la salida LSTM
-    attention_out = MultiHeadAttention(num_heads=16, key_dim=5)(lstm_out, lstm_out)
+    attention_out = MultiHeadAttention(num_heads=2, key_dim=10)(lstm_out, lstm_out)
+    print(attention_out.shape)  # (None, 24, 128)
     
-    # Agregar más capas LSTM si es necesario
-    lstm_out = Bidirectional(LSTM(20, return_sequences=False, kernel_initializer=initializer))(attention_out)
-    lstm_out = Dropout(0.1)(lstm_out)
-    lstm_out = BatchNormalization()(lstm_out)
+    # Aplicar GlobalAveragePooling1D para reducir la secuencia
+    pooled_out = GlobalAveragePooling1D()(attention_out)  # Esto reducirá la salida a (None, 128)
     
     # Capa de salida
-    output = Dense(ytrain.shape[1], activation='linear', kernel_initializer=initializer)(lstm_out)
-    
+    output = Dense(ytrain.shape[1], activation="relu" , kernel_initializer=initializer)(pooled_out)
+
     # Crear el modelo
     model = Model(inputs=inputs, outputs=output)
 
     # Definir el optimizador y la compilación del modelo
-    boundaries = [1, 2, 3, 50, 100, 250]
-    values = [0.001, 0.001, 0.0001, 0.00001, 0.00001, 0.00005, 0.000001]
+    boundaries = [2, 3, 4, 10, 100, 250]
+    values = [0.04, 0.005, 0.002, 0.0001, 0.00001, 0.00005, 0.000001]
     lr_schedule = tf.keras.optimizers.schedules.PiecewiseConstantDecay(
         boundaries=boundaries,
         values=values
@@ -420,6 +433,6 @@ def entrenar_modelo_con_atencion(Xtrain, ytrain, Xval, yval, path_guardado='mode
     checkpoint = ModelCheckpoint(path_guardado, monitor='val_loss', save_best_only=True, verbose=1)
 
     # Entrenamiento del modelo
-    model.fit(Xtrain, ytrain, epochs=5, batch_size=1, validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
+    model.fit(Xtrain, ytrain, epochs=1, batch_size=1, validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
 
     return model

@@ -1,0 +1,107 @@
+Error promedio global: 1.66
+Desviación estándar global: 15.01
+Error relativo porcentual promedio global: 58.31%
+
+dias = [0,1,2,3,4,5,6,7]  # Lunes, Miércoles, Viernes
+            horas = [1,2,3,4,5,6,7,8,9, 10, 11, 12,13,14,15,16,17,18,19,20,21,22,23]  # De 9 a 12 horas
+            df = cargar_datos_especificos('potencias.csv', 'corrientes.csv', dias_semanales=dias, horas=horas)
+            print(df.shape)
+
+            X, y = crear_ventana(df[40000:200000], 4,1)
+            
+            inicio_train = 0
+            fin_train = 40000
+            inicio_val = fin_train+1
+            fin_val = fin_train+1+10000
+            inicio_test = fin_val+1
+            fin_test = fin_val+1+500
+            # conjunto de validación
+            Xval = X[inicio_val:fin_val]
+            yval = y[inicio_val:fin_val]
+            #conjunto de entrenamiento
+            Xtrain = X[inicio_train:fin_train]
+            ytrain = y[inicio_train:fin_train]
+
+            Xtest = X[inicio_test:fin_test]
+            ytest = X[inicio_test:fin_test]
+
+            #X_n = escalar_entrada(X,scal)
+            Xval_n = Xval.copy()
+            print("el scaler levantado es ")
+
+            print("media ", scal['scaleractiva'].data_min_)
+            print("desv ", scal['scaleractiva'].data_max_)
+
+            Xval_n[:, :, 0] = scal['scaleractiva'].transform(Xval[:, :, 0])
+
+            logging.info("inicio prediccion")
+            print(Xval.shape)
+            print(Xval[0])
+            prediccionesval_n = modelo.predict(Xval_n)
+            prediccionesval = prediccionesval_n.copy()
+            prediccionesval = scal['salidas'].inverse_transform(prediccionesval_n)
+
+            #prediccionestest = modelo.predict(Xtrain, batch_size=1)
+
+        
+
+modelo:
+
+
+def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.h5'):
+    # Asegurar reproducibilidad
+    np.random.seed(47)
+    tf.random.set_seed(47)
+    initializer = GlorotUniform(seed=47)
+
+    # Define los intervalos y los valores de learning rate
+    boundaries = [1, 2, 20, 80, 140, 250]  # Los límites de los intervalos (épocas en este caso)
+    values = [0.005, 0.002, 0.001, 0.0001, 0.00001, 0.00005, 0.000001]  # Learning rates correspondientes a los intervalos
+
+    # Crea el scheduler de learning rate
+    lr_schedule = tf.keras.optimizers.schedules.PiecewiseConstantDecay(
+        boundaries=boundaries,
+        values=values
+    )
+    # Crear el modelo LSTM
+    model = Sequential()
+
+    model.add(Bidirectional(LSTM(256, return_sequences=True, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer ) ))
+    #model.add(Dropout(0.1))
+    model.add(BatchNormalization())
+
+    #model.add(Dense(128, activation='relu', kernel_initializer=initializer))
+    #model.add(Dropout(0.2)) 
+    model.add(Bidirectional(LSTM(128, return_sequences=False, kernel_initializer=initializer,  kernel_regularizer=l2(0.01) ) ))
+    #model.add(Dropout(0.1))
+    model.add(BatchNormalization())
+    #model.add(Bidirectional(LSTM(32, return_sequences=False, kernel_initializer=initializer,  kernel_regularizer=l2(0.01) ) ))
+    #model.add(Dropout(0.1))
+    #model.add(BatchNormalization())
+
+    model.add(Dense(ytrain.shape[1], activation="sigmoid"))
+
+    # Compilar el modelo con el optimizador personalizado
+    optimizer = Adam(learning_rate=lr_schedule, clipnorm=1)
+    model.compile(optimizer=optimizer, loss='mse')
+
+    # EarlyStopping para evitar sobreajuste
+    early_stopping = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
+
+    # ModelCheckpoint para guardar el modelo durante el entrenamiento
+    checkpoint = ModelCheckpoint(path_guardado, monitor='val_loss', save_best_only=True, verbose=1)
+
+    try:
+        # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
+        model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=1,
+                  validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
+    except MemoryError as e:
+        print("Error de memoria: ", e)
+        print("Guardando el modelo hasta el último punto alcanzado...")
+        model.save(path_guardado)  # Guarda el modelo al momento de fallo
+    except Exception as e:
+        print(f"Se produjo un error: {e}")
+        print("Guardando el modelo hasta el último punto alcanzado...")
+        model.save(path_guardado)  # Guarda el modelo si ocurre otro error
+
+    return model

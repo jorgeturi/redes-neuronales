@@ -13,7 +13,7 @@ if __name__ == "__main__":
     #from tools.bd import leer_data_crear_df, escribir_bd
 
     #modelo = cargar_modelo("modelo 1.0.8/modelo.keras")
-    modelo = cargar_modelo("modelo.keras")
+    modelo = cargar_modelo("modelo")
 
     if modelo is not None:  #si consegui el modelo
         modelo.summary()  
@@ -25,17 +25,17 @@ if __name__ == "__main__":
             #df = codificar_tiempo(df)
             #X= crear_ventana_dataset(df,4)
             df = cargar_datos()
-            dias = [1,2,3,4,5]  # Lunes, Miércoles, Viernes
-            horas = [8,9, 10, 11, 12,13,14,15,16]  # De 9 a 12 horas
+            dias = [0,1,2,3,4,5,6,7]  # Lunes, Miércoles, Viernes
+            horas = [1,2,3,4,5,6,7,8,9, 10, 11, 12,13,14,15,16,17,18,19,20,21,22,23]  # De 9 a 12 horas
             df = cargar_datos_especificos('potencias.csv', 'corrientes.csv', dias_semanales=dias, horas=horas)
             print(df.shape)
 
-            X, y = crear_ventana(df[000:200000], 4*4,4)
+            X, y = crear_ventana(df[40000:200000], 4,1)
             
             inicio_train = 0
-            fin_train = 18000
+            fin_train = 40000
             inicio_val = fin_train+1
-            fin_val = fin_train+1+5000
+            fin_val = fin_train+1+10000
             inicio_test = fin_val+1
             fin_test = fin_val+1+500
             # conjunto de validación
@@ -50,15 +50,19 @@ if __name__ == "__main__":
 
             #X_n = escalar_entrada(X,scal)
             Xval_n = Xval.copy()
+            print("el scaler levantado es ")
+
+            print("media ", scal['scaleractiva'].data_min_)
+            print("desv ", scal['scaleractiva'].data_max_)
 
             Xval_n[:, :, 0] = scal['scaleractiva'].transform(Xval[:, :, 0])
 
             logging.info("inicio prediccion")
             print(Xval.shape)
             print(Xval[0])
-            prediccionesval = modelo.predict(Xval_n, batch_size=1)
-            print("el shape es", prediccionesval.shape)
-            prediccionesval = scal['salidas'].inverse_transform(prediccionesval)
+            prediccionesval_n = modelo.predict(Xval_n)
+            prediccionesval = prediccionesval_n.copy()
+            prediccionesval = scal['salidas'].inverse_transform(prediccionesval_n)
 
             #prediccionestest = modelo.predict(Xtrain, batch_size=1)
 

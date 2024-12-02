@@ -32,3 +32,95 @@ devuelta sin cambiar nada
 Error promedio global: -15.70
 Desviación estándar global: 38.58
 Error relativo porcentual promedio global: 169.61%
+
+
+una prueba
+Mismo modelo con atención, sin atención, mismos datos
+con atención
+
+Error promedio global: -31.65
+Desviación estándar global: 20.07
+Error relativo porcentual promedio global: 77.06%
+
+sin atención
+
+Error promedio global: -33.18
+Desviación estándar global: 18.42
+Error relativo porcentual promedio global: 82.34%
+
+
+
+con el modelo directo
+Error promedio global: -28.68
+Desviación estándar global: 22.27
+Error relativo porcentual promedio global: 66.22%
+
+con el modelo cargado
+Error promedio global: -0.83
+Desviación estándar global: 14.48
+Error relativo porcentual promedio global: 44.60%
+
+
+
+Error promedio global: -21.53
+Desviación estándar global: 39.38
+Error relativo porcentual promedio global: 81.78%
+
+scaler en archivo
+
+media  [4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188
+ 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188]
+desv  [100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26
+ 100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26
+ 100.26 100.26 100.26 100.26]
+
+scaler levantado
+
+media  [4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188
+ 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188 4.188]
+desv  [100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26
+ 100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26 100.26
+ 100.26 100.26 100.26 100.26]
+
+
+
+Error promedio global: -48.77
+Desviación estándar global: 19.86
+Error relativo porcentual promedio global: 90.23%
+
+Error promedio global: -28.31
+Desviación estándar global: 19.49
+Error relativo porcentual promedio global: 80.72%
+
+
+
+
+guardado como modelo sin extensión
+
+
+levantado
+Error promedio global: -7.33
+Desviación estándar global: 8.15
+Error relativo porcentual promedio global: 39.01%
+
+
+modelo sin extensión desde archivo 
+Error promedio global: -9.50
+Desviación estándar global: 6.61
+Error relativo porcentual promedio global: 37.77%
+
+
+Error promedio global: -9.51
+Desviación estándar global: 6.61
+Error relativo porcentual promedio global: 37.82%
+
+
+desde archivo
+Error promedio global: -5.92
+Desviación estándar global: 15.08
+Error relativo porcentual promedio global: 69.85%
+
+Error promedio global: -5.92
+Desviación estándar global: 15.09
+Error relativo porcentual promedio global: 69.85%
+cargando
