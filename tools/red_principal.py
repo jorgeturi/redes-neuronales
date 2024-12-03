@@ -334,7 +334,7 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
     initializer = GlorotUniform(seed=47)
 
     # Define los intervalos y los valores de learning rate
-    boundaries = [1, 2, 20, 80, 140, 250]  # Los límites de los intervalos (épocas en este caso)
+    boundaries = [1, 2, 20, 30, 40, 250]  # Los límites de los intervalos (épocas en este caso)
     values = [0.005, 0.002, 0.001, 0.0001, 0.00001, 0.00005, 0.000001]  # Learning rates correspondientes a los intervalos
 
     # Crea el scheduler de learning rate
@@ -365,14 +365,14 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
     model.compile(optimizer=optimizer, loss='huber_loss')
 
     # EarlyStopping para evitar sobreajuste
-    early_stopping = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
+    early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
     # ModelCheckpoint para guardar el modelo durante el entrenamiento
     checkpoint = ModelCheckpoint(path_guardado, monitor='val_loss', save_best_only=True, verbose=1)
 
     try:
         # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
-        model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=4,
+        model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=16,
                   validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
     except MemoryError as e:
         print("Error de memoria: ", e)

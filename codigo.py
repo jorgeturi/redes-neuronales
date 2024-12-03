@@ -28,11 +28,11 @@ if __name__ == "__main__":
             X, y = crear_ventana(df[40000:120000], 4,1)
             
             inicio_train = 0
-            fin_train = 25000
-            inicio_val = fin_train+1
-            fin_val = fin_train+1+10000
+            fin_train = 45000
+            inicio_val = fin_train+1 
+            fin_val = fin_train+1+15000
             inicio_test = fin_val+1
-            fin_test = inicio_test+1+2000
+            fin_test = inicio_test+1+20000
             # conjunto de validación
             Xval = X[inicio_val:fin_val]
             yval = y[inicio_val:fin_val]
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
 
 
-            prediccionesTest = modell.predict(Xtrain_n)  # Esto sería lo que se debe hacer si aún no se ha calculado
+            prediccionesTest = modell.predict(Xtest_n)  # Esto sería lo que se debe hacer si aún no se ha calculado
             prediccionesTest = salidas.inverse_transform(prediccionesTest)
             
             print("Tamaño de prediccionesTest:", len(prediccionesTest))
@@ -107,8 +107,8 @@ if __name__ == "__main__":
             print("fin prediccion")
             #######################3
             #### VOLVER A PONER ESTO CUANDO NO PREDIGA CON LOS DE TRAIN
-            #yTest = ytest
-            yTest = ytrain
+            yTest = ytest
+            #yTest = ytrain
 
             import pandas as pd
 

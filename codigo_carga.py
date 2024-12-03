@@ -14,6 +14,7 @@ if __name__ == "__main__":
 
     #modelo = cargar_modelo("modelo 1.0.8/modelo.keras")
     modelo = cargar_modelo("modelo")
+    #modelo = cargar_modelo("modelo_entrenado.h5")
 
     if modelo is not None:  #si consegui el modelo
         modelo.summary()  
@@ -33,9 +34,9 @@ if __name__ == "__main__":
             X, y = crear_ventana(df[40000:200000], 4,1)
             
             inicio_train = 0
-            fin_train = 40000
+            fin_train = 45000
             inicio_val = fin_train+1
-            fin_val = fin_train+1+10000
+            fin_val = fin_train+1+30000
             inicio_test = fin_val+1
             fin_test = fin_val+1+500
             # conjunto de validación

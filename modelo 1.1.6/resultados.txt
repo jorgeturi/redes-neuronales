@@ -1,0 +1,6 @@
+30000 que nunca vio
+
+
+Error promedio global: 0.58
+Desviación estándar global: 3.78
+Error relativo porcentual promedio global: 11.66%

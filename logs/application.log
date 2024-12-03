@@ -17361,3 +17361,65 @@
 2024-12-02 11:26:24,815 - INFO - Ventanas creadas
 2024-12-02 11:26:24,834 - INFO - inicio prediccion
 2024-12-02 11:28:24,274 - DEBUG - Creating converter from 5 to 3
+2024-12-02 14:50:26,785 - INFO - Assets written to: modelo\assets
+2024-12-02 18:05:45,634 - INFO - Modelo cargado exitosamente desde modelo.
+2024-12-02 18:05:47,604 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-02 18:05:48,625 - INFO - Datos cargados.
+2024-12-02 18:05:49,660 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-02 18:05:49,670 - INFO - Creando ventanas.
+2024-12-02 18:05:52,051 - INFO - Ventanas creadas
+2024-12-02 18:05:52,060 - INFO - inicio prediccion
+2024-12-02 18:11:33,303 - INFO - Modelo cargado exitosamente desde modelo.
+2024-12-02 18:11:34,859 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-02 18:11:35,749 - INFO - Datos cargados.
+2024-12-02 18:11:36,603 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-02 18:11:36,603 - INFO - Creando ventanas.
+2024-12-02 18:11:38,725 - INFO - Ventanas creadas
+2024-12-02 18:11:38,733 - INFO - inicio prediccion
+2024-12-02 18:15:38,941 - INFO - Modelo cargado exitosamente desde modelo.
+2024-12-02 18:15:40,126 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-02 18:15:41,226 - INFO - Datos cargados.
+2024-12-02 18:15:42,132 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-02 18:15:42,141 - INFO - Creando ventanas.
+2024-12-02 18:15:44,244 - INFO - Ventanas creadas
+2024-12-02 18:15:44,259 - INFO - inicio prediccion
+2024-12-02 18:21:01,069 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-02 18:21:02,348 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-02 18:21:03,311 - INFO - Datos cargados.
+2024-12-02 18:21:04,303 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-02 18:21:04,312 - INFO - Creando ventanas.
+2024-12-02 18:21:06,545 - INFO - Ventanas creadas
+2024-12-02 18:21:06,596 - INFO - inicio prediccion
+2024-12-02 18:32:46,987 - DEBUG - Creating converter from 5 to 3
+2024-12-02 22:21:28,384 - INFO - Assets written to: modelo\assets
+2024-12-02 22:26:14,017 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-02 22:26:17,545 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-02 22:26:18,135 - INFO - Datos cargados.
+2024-12-02 22:26:18,677 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-02 22:26:18,686 - INFO - Creando ventanas.
+2024-12-02 22:26:19,647 - INFO - Ventanas creadas
+2024-12-02 22:26:19,675 - INFO - inicio prediccion
+2024-12-02 22:30:47,386 - DEBUG - Creating converter from 5 to 3
+2024-12-02 23:23:02,412 - INFO - Modelo cargado exitosamente desde modelo.
+2024-12-02 23:23:07,211 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-02 23:23:07,708 - INFO - Datos cargados.
+2024-12-02 23:23:08,162 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-02 23:23:08,167 - INFO - Creando ventanas.
+2024-12-02 23:23:09,087 - INFO - Ventanas creadas
+2024-12-02 23:23:09,094 - INFO - inicio prediccion
+2024-12-02 23:23:54,466 - DEBUG - Creating converter from 3 to 5
+2024-12-02 23:23:55,805 - INFO - Modelo cargado exitosamente desde modelo_entrenado.h5.
+2024-12-02 23:23:56,497 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-02 23:23:56,940 - INFO - Datos cargados.
+2024-12-02 23:23:57,393 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-02 23:23:57,400 - INFO - Creando ventanas.
+2024-12-02 23:23:58,311 - INFO - Ventanas creadas
+2024-12-02 23:23:58,317 - INFO - inicio prediccion
+2024-12-02 23:24:46,837 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-02 23:24:47,419 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-02 23:24:47,862 - INFO - Datos cargados.
+2024-12-02 23:24:48,320 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-02 23:24:48,326 - INFO - Creando ventanas.
+2024-12-02 23:24:49,234 - INFO - Ventanas creadas
+2024-12-02 23:24:49,258 - INFO - inicio prediccion
+2024-12-02 23:25:59,431 - DEBUG - Creating converter from 5 to 3
