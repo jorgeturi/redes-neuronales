@@ -28,15 +28,15 @@ if __name__ == "__main__":
             df = cargar_datos()
             dias = [0,1,2,3,4,5,6,7]  # Lunes, Miércoles, Viernes
             horas = [1,2,3,4,5,6,7,8,9, 10, 11, 12,13,14,15,16,17,18,19,20,21,22,23]  # De 9 a 12 horas
-            df = cargar_datos_especificos('potencias.csv', 'corrientes.csv', dias_semanales=dias, horas=horas)
+            df = cargar_datos_especificos('potencias2.csv', 'corrientes.csv', dias_semanales=dias, horas=horas)
             print(df.shape)
 
-            X, y = crear_ventana(df[40000:200000], 4,1)
+            X, y = crear_ventana(df[40000:200000], 4,4)
             
             inicio_train = 0
-            fin_train = 45000
+            fin_train = 24981
             inicio_val = fin_train+1
-            fin_val = fin_train+1+30000
+            fin_val = fin_train+1+50000
             inicio_test = fin_val+1
             fin_test = fin_val+1+500
             # conjunto de validación
@@ -64,6 +64,7 @@ if __name__ == "__main__":
             prediccionesval_n = modelo.predict(Xval_n)
             prediccionesval = prediccionesval_n.copy()
             prediccionesval = scal['salidas'].inverse_transform(prediccionesval_n)
+            print("la long de 1 pred es ",  prediccionesval[0].shape)
 
             #prediccionestest = modelo.predict(Xtrain, batch_size=1)
 

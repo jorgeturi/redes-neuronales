@@ -1,0 +1,5 @@
+con los datos nuevos de pato 
+
+Error promedio global: -0.50
+Desviación estándar global: 2.13
+Error relativo porcentual promedio global: 8.83%

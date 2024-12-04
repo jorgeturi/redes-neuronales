@@ -1,0 +1,16 @@
+CON BZ 1 ERROR DEL 200% Y MALOS INDICADORES
+CON BZ 16.. PARECE QUE BUENO.. MODIFICANDO INFO A BZ=4 CONSIGO LOS RESULTADOS DICHOS
+
+
+Tamaño de prediccionesTest: 12292
+Tamaño de yTest: 12292
+fin prediccion
+Error promedio global: -0.08
+Desviación estándar global: 1.64
+Error relativo porcentual promedio global: 7.28%
+
+
+Epoch 140/250
+2812/2813 [============================>.] - ETA: 0s - loss: 5.2143e-04  
+Epoch 140: val_loss did not improve from 0.00020
+2813/2813 [==============================] - 69s 24ms/step - loss: 5.2151e-04 - val_loss: 2.0071e-04

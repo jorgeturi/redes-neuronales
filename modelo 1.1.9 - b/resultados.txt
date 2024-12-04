@@ -1,0 +1,12 @@
+Epoch 129: val_loss did not improve from 0.00176
+2813/2813 [==============================] - 437s 155ms/step - loss: 0.0022 - val_loss: 0.0019
+INFO:tensorflow:Assets written to: modelo\assets
+2024-12-04 11:18:49,966 - INFO - Assets written to: modelo\assets
+fin prediccion
+383/383 [==============================] - 21s 49ms/step
+Tamaño de prediccionesTest: 12225
+Tamaño de yTest: 12225
+fin prediccion
+Error promedio global: 0.22
+Desviación estándar global: 4.26
+Error relativo porcentual promedio global: 15.01%
