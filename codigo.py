@@ -25,7 +25,7 @@ if __name__ == "__main__":
             #df = codificar_tiempo(df)
             #X= crear_ventana_dataset(df,4)
             print(df.shape)
-            X, y = crear_ventana(df[40000:120000], 24*4,4)
+            X, y = crear_ventana(df[40000:120000], 24*4*7,4*24)
             
             inicio_train = 0
             fin_train = 45000

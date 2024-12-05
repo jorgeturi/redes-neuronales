@@ -17507,3 +17507,31 @@
 2024-12-04 12:25:42,446 - INFO - Ventanas creadas
 2024-12-04 12:25:42,759 - INFO - inicio prediccion
 2024-12-04 12:53:53,164 - DEBUG - Creating converter from 5 to 3
+2024-12-05 03:24:03,437 - INFO - Assets written to: modelo\assets
+2024-12-05 13:06:05,698 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-05 13:06:10,413 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-05 13:06:10,936 - INFO - Datos cargados.
+2024-12-05 13:06:11,412 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-05 13:06:11,421 - INFO - Creando ventanas.
+2024-12-05 13:06:13,831 - INFO - Ventanas creadas
+2024-12-05 13:06:26,587 - INFO - inicio prediccion
+2024-12-05 13:07:48,879 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-05 13:07:49,727 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-05 13:07:50,197 - INFO - Datos cargados.
+2024-12-05 13:07:50,650 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-05 13:07:50,664 - INFO - Creando ventanas.
+2024-12-05 13:07:52,346 - INFO - Ventanas creadas
+2024-12-05 13:16:51,606 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-05 13:16:52,170 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-05 13:16:52,606 - INFO - Datos cargados.
+2024-12-05 13:16:53,066 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-05 13:16:53,073 - INFO - Creando ventanas.
+2024-12-05 13:16:55,068 - INFO - Ventanas creadas
+2024-12-05 13:16:58,307 - INFO - inicio prediccion
+2024-12-05 13:19:09,110 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-05 13:19:10,021 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-05 13:19:10,488 - INFO - Datos cargados.
+2024-12-05 13:19:10,941 - INFO - Datos cargados y filtrados. Total de registros: 112298
+2024-12-05 13:19:10,946 - INFO - Creando ventanas.
+2024-12-05 13:19:12,634 - INFO - Ventanas creadas
+2024-12-05 13:19:14,615 - INFO - inicio prediccion
