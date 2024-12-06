@@ -19,20 +19,20 @@ if __name__ == "__main__":
             print("scalers:", scal)
             #df = leer_data_crear_df()
             df = cargar_datos()
-            dias = [0,1,2,3,4,5,6,7]  # Lunes, Miércoles, Viernes
-            horas = [1,2,3,4,5,6,7,8,9, 10, 11, 12,13,14,15,16,17,18,19,20,21,22,23]  # De 9 a 12 horas
+            dias = [1,2,3,4,5]  # Lunes, Miércoles, Viernes
+            horas = [9, 10, 11, 12,13,14,15,16]  # De 9 a 12 horas
             df = cargar_datos_especificos('potencias.csv', 'corrientes.csv', dias_semanales=dias, horas=horas)
             #df = codificar_tiempo(df)
             #X= crear_ventana_dataset(df,4)
             print(df.shape)
-            X, y = crear_ventana(df[40000:120000], 24*4*7,4*24)
+            X, y = crear_ventana(df[9000:120000], 12*4,4*6)
             
             inicio_train = 0
-            fin_train = 45000
+            fin_train = 5000
             inicio_val = fin_train+1 
-            fin_val = fin_train+1+15000
+            fin_val = fin_train+1+5000
             inicio_test = fin_val+1
-            fin_test = inicio_test+1+20000
+            fin_test = inicio_test+1+5800
             # conjunto de validación
             Xval = X[inicio_val:fin_val]
             yval = y[inicio_val:fin_val]
@@ -61,9 +61,17 @@ if __name__ == "__main__":
             yval_n = salidas.transform(yval)
             ytest_n = salidas.transform(ytest)
 
-            
+
+            scalerdiferencias = MinMaxScaler(feature_range=(0, 1))
+            Xtrain_n = Xtrain.copy()
+            Xtrain_n[:, :, 5] = scalerdiferencias.fit_transform(Xtrain[:, :, 5])
+            Xval_n = Xval.copy()
+            Xval_n[:, :, 5] = scalerdiferencias.transform(Xval[:, :, 5])
+            Xtest_n = Xtest.copy()
+            Xtest_n[:, :, 5] = scalerdiferencias.transform(Xtest[:, :, 5])
+
             import pickle
-            scalers = {'scaleractiva': scaleractiva, 'salidas': salidas}
+            scalers = {'scaleractiva': scaleractiva, 'salidas': salidas, 'scalerdiferencias': scalerdiferencias}
 
             with open('scalers.pkl', 'wb') as f:
                 pickle.dump(scalers, f)

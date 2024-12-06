@@ -56,7 +56,7 @@ def crear_ventana(dataset, ventana_entrada, ventana_salida):
     logging.info("Creando ventanas.")
 
     # Extraer las características necesarias
-    features = dataset[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos']].values
+    features = dataset[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos', 'diferencia_activa']].values
     #features = dataset[['activa']].values
 
 
@@ -259,8 +259,12 @@ def cargar_datos_especificos(archivo_potencias='potencias.csv', archivo_corrient
         if horas is not None:
             df_unido = df_unido[df_unido['timestamp'].dt.hour.isin(horas)]
 
+
+        # Calcular la diferencia con el valor anterior
+        df_unido['diferencia_activa'] = df_unido['activa'].diff()
+
         # Seleccionar y reorganizar las columnas en el formato deseado
-        final_df = df_unido[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos']]
+        final_df = df_unido[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos', 'diferencia_activa']]
         #final_df = df_unido[['activa']]
 
 
@@ -372,7 +376,7 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
 
     try:
         # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
-        model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=128,
+        model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=1,
                   validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
     except MemoryError as e:
         print("Error de memoria: ", e)

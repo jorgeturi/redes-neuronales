@@ -1,0 +1,8 @@
+Tamaño de prediccionesTest: 11529
+Tamaño de yTest: 11529
+fin prediccion
+
+Error promedio global: 25.93
+Desviación estándar global: 9.45
+Error relativo porcentual promedio global: 192.42%
+Resultados guardados en 'resultados_predicciones_con_datos.csv'

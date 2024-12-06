@@ -17535,3 +17535,54 @@
 2024-12-05 13:19:10,946 - INFO - Creando ventanas.
 2024-12-05 13:19:12,634 - INFO - Ventanas creadas
 2024-12-05 13:19:14,615 - INFO - inicio prediccion
+2024-12-05 14:03:11,184 - DEBUG - Creating converter from 5 to 3
+2024-12-05 21:24:19,485 - INFO - Assets written to: modelo\assets
+2024-12-05 21:38:42,847 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-05 21:38:43,872 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-05 21:38:44,411 - INFO - Datos cargados.
+2024-12-05 21:38:44,863 - INFO - Datos cargados y filtrados. Total de registros: 34869
+2024-12-05 21:38:44,868 - INFO - Creando ventanas.
+2024-12-05 21:38:44,871 - INFO - Ventanas creadas
+2024-12-05 21:39:45,787 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-05 21:39:46,350 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-05 21:39:46,795 - INFO - Datos cargados.
+2024-12-05 21:39:47,241 - INFO - Datos cargados y filtrados. Total de registros: 34869
+2024-12-05 21:39:47,246 - INFO - Creando ventanas.
+2024-12-05 21:39:47,597 - INFO - Ventanas creadas
+2024-12-05 21:39:47,717 - INFO - inicio prediccion
+2024-12-05 22:06:04,076 - DEBUG - Creating converter from 5 to 3
+2024-12-06 06:06:01,842 - INFO - Assets written to: modelo\assets
+2024-12-06 10:16:07,383 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-06 10:16:11,855 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-06 10:16:12,344 - INFO - Datos cargados.
+2024-12-06 10:16:12,785 - INFO - Datos cargados y filtrados. Total de registros: 34869
+2024-12-06 10:16:12,792 - INFO - Creando ventanas.
+2024-12-06 10:16:13,213 - INFO - Ventanas creadas
+2024-12-06 10:16:13,416 - INFO - inicio prediccion
+2024-12-06 10:17:30,568 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-06 10:17:31,302 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-06 10:17:31,919 - INFO - Datos cargados.
+2024-12-06 10:17:32,446 - INFO - Datos cargados y filtrados. Total de registros: 34869
+2024-12-06 10:17:32,452 - INFO - Creando ventanas.
+2024-12-06 10:17:32,933 - INFO - Ventanas creadas
+2024-12-06 10:17:33,091 - INFO - inicio prediccion
+2024-12-06 10:27:27,628 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-06 10:27:28,240 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-06 10:27:28,692 - INFO - Datos cargados.
+2024-12-06 10:27:29,133 - INFO - Datos cargados y filtrados. Total de registros: 34869
+2024-12-06 10:27:29,133 - INFO - Creando ventanas.
+2024-12-06 10:27:29,493 - INFO - Ventanas creadas
+2024-12-06 10:29:41,645 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-06 10:29:42,226 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-06 10:29:42,669 - INFO - Datos cargados.
+2024-12-06 10:29:43,101 - INFO - Datos cargados y filtrados. Total de registros: 34869
+2024-12-06 10:29:43,106 - INFO - Creando ventanas.
+2024-12-06 10:29:43,462 - INFO - Ventanas creadas
+2024-12-06 10:29:43,541 - INFO - inicio prediccion
+2024-12-06 10:31:31,829 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-06 10:31:32,413 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-06 10:31:32,851 - INFO - Datos cargados.
+2024-12-06 10:31:33,289 - INFO - Datos cargados y filtrados. Total de registros: 27893
+2024-12-06 10:31:33,289 - INFO - Creando ventanas.
+2024-12-06 10:31:33,550 - INFO - Ventanas creadas
+2024-12-06 10:31:33,636 - INFO - inicio prediccion
