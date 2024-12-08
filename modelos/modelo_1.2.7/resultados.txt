@@ -1,0 +1,10 @@
+Error promedio global: 31.41
+Desviación estándar global: 3.54
+Error relativo porcentual promedio global: 211.21%
+Cantidad de datos: 8004
+Cantidad de errores menores o iguales a 1: 249 (3.11%)
+Cantidad de errores menores o iguales a 2: 577 (7.21%)
+Cantidad de errores menores o iguales a 3: 947 (11.83%)
+Cantidad de errores menores o iguales a 4: 1321 (16.50%)
+Cantidad de errores menores o iguales a 5: 1670 (20.86%)
+El error más grande cometido: 91.84

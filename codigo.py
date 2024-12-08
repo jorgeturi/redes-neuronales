@@ -25,12 +25,12 @@ if __name__ == "__main__":
             #df = codificar_tiempo(df)
             #X= crear_ventana_dataset(df,4)
             print(df.shape)
-            X, y = crear_ventana(df[9000:120000], 12*4,4*6)
+            X, y = crear_ventana(df[9000:120000], 12*4,4)
             
             inicio_train = 0
-            fin_train = 5000
-            inicio_val = fin_train+1 
-            fin_val = fin_train+1+5000
+            fin_train = 15000
+            inicio_val = fin_train+1
+            fin_val = fin_train+1+2500
             inicio_test = fin_val+1
             fin_test = inicio_test+1+5800
             # conjunto de validación
