@@ -1,1 +1,12 @@
 Resultados de la predicción para el modelo modelo_1.2.2:
+
+Error promedio global: 15.38
+Desviación estándar global: 1.39
+Error relativo porcentual promedio global: 131.75%
+Cantidad de datos: 12004
+Cantidad de errores menores o iguales a 1: 667 (5.56%)
+Cantidad de errores menores o iguales a 2: 1373 (11.44%)
+Cantidad de errores menores o iguales a 3: 2053 (17.10%)
+Cantidad de errores menores o iguales a 4: 2629 (21.90%)
+Cantidad de errores menores o iguales a 5: 3213 (26.77%)
+El error más grande cometido: 32.89

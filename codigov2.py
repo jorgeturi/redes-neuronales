@@ -140,7 +140,7 @@ if __name__ == "__main__":
     setup_logger()
 
     # Pedir al usuario el nombre del modelo
-    nombre_modelo = "modelo_1.2.2"  # Ejemplo de nombre
+    nombre_modelo = "modelo_1.2.23"  # Ejemplo de nombre
     carpeta, resultados_path = crear_carpeta_y_guardar(nombre_modelo)
 
     # Cargar el modelo previamente entrenado
@@ -196,25 +196,25 @@ if __name__ == "__main__":
             ytest_n = salidas.transform(ytest)
 
 
-            scalerdiferencias = MinMaxScaler(feature_range=(0, 1))
-            Xtrain_n[:, :, 5] = scalerdiferencias.fit_transform(Xtrain[:, :, 5])
-            Xval_n = Xval.copy()
-            Xval_n[:, :, 5] = scalerdiferencias.transform(Xval[:, :, 5])
-            Xtest_n = Xtest.copy()
-            Xtest_n[:, :, 5] = scalerdiferencias.transform(Xtest[:, :, 5])
+            #scalerdiferencias = MinMaxScaler(feature_range=(0, 1))
+            #Xtrain_n[:, :, 3] = scalerdiferencias.fit_transform(Xtrain[:, :, 3])
+            #Xval_n = Xval.copy()
+            #Xval_n[:, :, 3] = scalerdiferencias.transform(Xval[:, :, 3])
+            #Xtest_n = Xtest.copy()
+            #Xtest_n[:, :, 3] = scalerdiferencias.transform(Xtest[:, :, 3])
 
             #scalermedicion = MinMaxScaler(feature_range=(0, 1))
-            #Xtrain_n[:, :, 6] =scalermedicion.fit_transform(Xtrain[:, :, 6])
+            #Xtrain_n[:, :, 4] =scalermedicion.fit_transform(Xtrain[:, :, 4])
             #Xval_n = Xval.copy()
-            #Xval_n[:, :, 6] = scalermedicion.transform(Xval[:, :, 6])
+            #Xval_n[:, :, 4] = scalermedicion.transform(Xval[:, :, 4])
             #Xtest_n = Xtest.copy()
-            #Xtest_n[:, :, 6] = scalermedicion.transform(Xtest[:, :, 6])
+            #Xtest_n[:, :, 4] = scalermedicion.transform(Xtest[:, :, 4])
 
             print(Xtest_n)
 
 
             #scalers = {'scaleractiva': scaleractiva, 'salidas': salidas, 'scalerdiferencias': scalerdiferencias, 'scalermedicion': scalermedicion}
-            scalers = {'scaleractiva': scaleractiva, 'salidas': salidas, 'scalerdiferencias': scalerdiferencias}
+            scalers = {'scaleractiva': scaleractiva, 'salidas': salidas}
 
 
 
@@ -223,8 +223,8 @@ if __name__ == "__main__":
 
 
             # Entrenar el modelo
-            #modell = entrenar_modelo(Xtrain_n, ytrain_n, Xval_n, yval_n)
-            modell = define_model(Xtrain_n, ytrain_n, Xval_n, yval_n)
+            modell = entrenar_modelo(Xtrain_n, ytrain_n, Xval_n, yval_n)
+            #modell = define_model(Xtrain_n, ytrain_n, Xval_n, yval_n)
 
             # Realizar predicciones
             prediccionesTest = modell.predict(Xtest_n)

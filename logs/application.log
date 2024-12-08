@@ -17847,3 +17847,47 @@
 2024-12-07 23:24:04,242 - INFO - Creando ventanas.
 2024-12-07 23:24:04,500 - INFO - Ventanas creadas
 2024-12-07 23:25:07,336 - DEBUG - Creating converter from 5 to 3
+2024-12-07 23:49:41,485 - INFO - Assets written to: modelos/modelo_1.2.2\modelo\assets
+2024-12-07 23:51:31,488 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-07 23:51:31,505 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-07 23:51:32,008 - INFO - Datos cargados.
+2024-12-07 23:51:32,531 - INFO - Datos cargados y filtrados. Total de registros: 27893
+2024-12-07 23:51:32,537 - INFO - Creando ventanas.
+2024-12-07 23:51:32,787 - INFO - Ventanas creadas
+2024-12-07 23:51:58,973 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-07 23:51:58,987 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-07 23:51:59,463 - INFO - Datos cargados.
+2024-12-07 23:51:59,907 - INFO - Datos cargados y filtrados. Total de registros: 27893
+2024-12-07 23:51:59,913 - INFO - Creando ventanas.
+2024-12-07 23:52:00,163 - INFO - Ventanas creadas
+2024-12-07 23:52:28,425 - DEBUG - Creating converter from 5 to 3
+2024-12-07 23:59:03,218 - INFO - Assets written to: modelos/modelo_1.2.20\modelo\assets
+2024-12-07 23:59:38,396 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-07 23:59:38,411 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-07 23:59:39,055 - INFO - Datos cargados.
+2024-12-07 23:59:39,685 - INFO - Datos cargados y filtrados. Total de registros: 27893
+2024-12-07 23:59:39,693 - INFO - Creando ventanas.
+2024-12-07 23:59:40,036 - INFO - Ventanas creadas
+2024-12-08 00:00:10,114 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-08 00:00:10,128 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-08 00:00:10,612 - INFO - Datos cargados.
+2024-12-08 00:00:11,096 - INFO - Datos cargados y filtrados. Total de registros: 27893
+2024-12-08 00:00:11,104 - INFO - Creando ventanas.
+2024-12-08 00:00:11,417 - INFO - Ventanas creadas
+2024-12-08 00:00:42,108 - DEBUG - Creating converter from 5 to 3
+2024-12-08 00:07:20,258 - INFO - Assets written to: modelos/modelo_1.2.21\modelo\assets
+2024-12-08 00:07:36,611 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-08 00:07:36,624 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-08 00:07:37,246 - INFO - Datos cargados.
+2024-12-08 00:07:37,869 - INFO - Datos cargados y filtrados. Total de registros: 27893
+2024-12-08 00:07:37,875 - INFO - Creando ventanas.
+2024-12-08 00:07:38,252 - INFO - Ventanas creadas
+2024-12-08 00:09:21,394 - DEBUG - Creating converter from 5 to 3
+2024-12-08 00:27:03,633 - INFO - Assets written to: modelos/modelo_1.2.22\modelo\assets
+2024-12-08 00:29:01,177 - INFO - Modelo cargado exitosamente desde modelo_trained.keras.
+2024-12-08 00:29:01,200 - INFO - Escaladores cargados exitosamente desde scalers.pkl.
+2024-12-08 00:29:01,866 - INFO - Datos cargados.
+2024-12-08 00:29:02,500 - INFO - Datos cargados y filtrados. Total de registros: 27893
+2024-12-08 00:29:02,507 - INFO - Creando ventanas.
+2024-12-08 00:29:02,856 - INFO - Ventanas creadas
+2024-12-08 00:29:49,015 - DEBUG - Creating converter from 5 to 3

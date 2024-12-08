@@ -56,7 +56,9 @@ def crear_ventana(dataset, ventana_entrada, ventana_salida):
     logging.info("Creando ventanas.")
 
     # Extraer las características necesarias
-    features = dataset[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos', 'diferencia_activa', 'numero_de_medicion']].values
+    #features = dataset[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos', 'diferencia_activa', 'numero_de_medicion']].values
+    features = dataset[['activa', 'mes_sen', 'mes_cos']].values
+
     #features = dataset[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos', 'diferencia_activa']].values
 
     #features = dataset[['activa']].values
@@ -381,14 +383,14 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
     model.compile(optimizer=optimizer, loss='huber_loss')
 
     # EarlyStopping para evitar sobreajuste
-    early_stopping = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
+    early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
     # ModelCheckpoint para guardar el modelo durante el entrenamiento
     checkpoint = ModelCheckpoint(path_guardado, monitor='val_loss', save_best_only=True, verbose=1)
 
     try:
         # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
-        model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=64,
+        model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=16,
                   validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
     except MemoryError as e:
         print("Error de memoria: ", e)
@@ -453,7 +455,7 @@ def define_model(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.h5'
 
     try:
         # Entrenar el modelo con datos de validación, EarlyStopping y ModelCheckpoint
-        model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=64,
+        model.fit(Xtrain, ytrain, epochs=250, verbose=1, batch_size=16,
                   validation_data=(Xval, yval), callbacks=[early_stopping, checkpoint])
     except MemoryError as e:
         print("Error de memoria: ", e)
