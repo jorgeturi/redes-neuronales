@@ -1,1 +1,14 @@
 Resultados de la predicción para el modelo modelo_1.2.23:
+
+Error promedio global: 3.27
+Desviación estándar global: 1.18
+Error relativo porcentual promedio global: 22.83%
+Cantidad de datos: 12004
+Cantidad de errores menores o iguales a 1: 2191 (18.25%)
+Cantidad de errores menores o iguales a 2: 4291 (35.75%)
+Cantidad de errores menores o iguales a 3: 6187 (51.54%)
+Cantidad de errores menores o iguales a 4: 8069 (67.22%)
+Cantidad de errores menores o iguales a 5: 9661 (80.48%)
+El error más grande cometido: 21.43
+el mape da: 0.22831433805039641
+La precisin es: 0.7716856619496035

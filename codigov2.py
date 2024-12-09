@@ -140,7 +140,7 @@ if __name__ == "__main__":
     setup_logger()
 
     # Pedir al usuario el nombre del modelo
-    nombre_modelo = "modelo_1.2.23"  # Ejemplo de nombre
+    nombre_modelo = "modelo_1.2.29"  # Ejemplo de nombre
     carpeta, resultados_path = crear_carpeta_y_guardar(nombre_modelo)
 
     # Cargar el modelo previamente entrenado
@@ -157,7 +157,7 @@ if __name__ == "__main__":
             horas = [9, 10, 11, 12, 13, 14, 15, 16]  # Ejemplo de horas
             df = cargar_datos_especificos('potencias.csv', 'corrientes.csv', dias_semanales=dias, horas=horas)
             print("tengo estos datos ",df.shape)
-            X, y = crear_ventana(df[9000:120000], 9*4, 4)
+            X, y = crear_ventana(df[9000:120000], 2*9*4, 4)
 
             
 

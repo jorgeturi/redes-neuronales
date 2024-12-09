@@ -57,7 +57,7 @@ def crear_ventana(dataset, ventana_entrada, ventana_salida):
 
     # Extraer las características necesarias
     #features = dataset[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos', 'diferencia_activa', 'numero_de_medicion']].values
-    features = dataset[['activa', 'mes_sen', 'mes_cos']].values
+    features = dataset[['activa','dia_sen', 'dia_cos', 'mes_sen', 'mes_cos']].values
 
     #features = dataset[['activa', 'dia_sen', 'dia_cos', 'mes_sen', 'mes_cos', 'diferencia_activa']].values
 
@@ -352,8 +352,8 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
     initializer = GlorotUniform(seed=47)
 
     # Define los intervalos y los valores de learning rate
-    boundaries = [1, 2, 20, 30, 40, 250]  # Los límites de los intervalos (épocas en este caso)
-    values = [0.005, 0.002, 0.001, 0.0001, 0.00001, 0.00005, 0.000001]  # Learning rates correspondientes a los intervalos
+    boundaries = [3, 4, 20, 30, 40, 250]  # Los límites de los intervalos (épocas en este caso)
+    values = [0.005, 0.002, 0.001, 0.0001, 0.00005, 0.00001, 0.000001]  # Learning rates correspondientes a los intervalos
 
     # Crea el scheduler de learning rate
     lr_schedule = tf.keras.optimizers.schedules.PiecewiseConstantDecay(
@@ -363,18 +363,18 @@ def entrenar_modelo(Xtrain, ytrain, Xval, yval, path_guardado='modelo_entrenado.
     # Crear el modelo LSTM
     model = Sequential()
 
-    model.add(LSTM(288, return_sequences=False, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer ) )
+    model.add(LSTM(288, return_sequences=True, input_shape=(Xtrain.shape[1], Xtrain.shape[2]), kernel_initializer=initializer ) )
     #model.add(Dropout(0.1))
     model.add(BatchNormalization())
 
     #model.add(Dense(128, activation='relu', kernel_initializer=initializer))
     #model.add(Dropout(0.2)) 
-    #model.add(LSTM(90, return_sequences=True, kernel_initializer=initializer ) )
+    model.add(LSTM(200, return_sequences=False, kernel_initializer=initializer ) )
     #model.add(Dropout(0.1))
     #model.add(BatchNormalization())
-    #model.add(LSTM(20, return_sequences=False, kernel_initializer=initializer ) )
+    #model.add(LSTM(50, return_sequences=False, kernel_initializer=initializer ) )
     #model.add(Dropout(0.1))
-    #model.add(BatchNormalization())
+    model.add(BatchNormalization())
 
     model.add(Dense(ytrain.shape[1], activation="sigmoid"))
 
